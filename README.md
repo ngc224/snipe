@@ -7,6 +7,10 @@ Install
 -----
     $ sudo pip install snipe
 
+Install mac osx
+-----
+    $ brew install ngc224/snipe/snipe
+
 Setup
 -----
 [Please get the developer token of evernote](https://www.evernote.com/api/DeveloperToken.action)   
