@@ -4,7 +4,7 @@
 import os
 
 application_name = 'snipe'
-version = '0.0.2'
+version = '0.0.3'
 
 filepath_user = os.environ['HOME'] + '/.' + application_name
 filepath_dump = os.environ['HOME'] + '/.' + application_name + '.dump'

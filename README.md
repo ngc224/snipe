@@ -39,8 +39,6 @@ Help
 -----
     usage: snipe [-h] [--config] [-v] [number]
     
-    snipe version 0.0.1
-    
     positional arguments:
       number         number of snippet
     

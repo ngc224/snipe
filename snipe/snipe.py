@@ -152,7 +152,7 @@ def main():
         try:
             enex = snipe.getNoteContent(args.number)
         except:
-            return 1
+            return textui.colored.red('Notes can not be found')
         enex = re.sub(r"<br>|<br/>", '!br!', enex)
         dom = minidom.parseString(enex.encode('utf_8'))
         Snipe.enexParse(dom)
@@ -165,7 +165,7 @@ def main():
             print textui.colored.blue("No " + str(k) + " : " + v.title)
         return 0
     except:
-        return 1
+        return textui.colored.red('Notes can not be found')
 
 if __name__ == "__main__":
     sys.exit(main())

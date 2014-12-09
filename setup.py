@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 import sys
+import snipe.config as config
 
 install_requires = ['evernote', 'clint', 'keyring']
 
@@ -7,7 +8,7 @@ if sys.version_info < (2, 7):
     install_requires.append('argparse')
 
 setup(name='snipe',
-      version='0.0.2',
+      version=config.version,
       description='Evernote command line tool',
       author='Yoshihiko Nishida',
       author_email='nishida@ngc224.org',
