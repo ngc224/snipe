@@ -13,17 +13,22 @@ Install mac osx
 
 Setup
 -----
-[Please get the developer token of evernote](https://www.evernote.com/api/DeveloperToken.action)   
-OSX have saved the token to keychain  
+Setup user config 
 
     $ snipe --config
+    Get Evernote DeveloperToken URL --> https://www.evernote.com/api/DeveloperToken.action
+    DeveloperToken: <developer token>
+    Set search tag / Default is 'snipe'
+    Search tag: <tag>
+    Set search max limit / Default is 50
+    Search limit: <limit>
 
 Usage
 -----
 View the note list
 
     $ snipe
-    Search tag --> '<tag>'
+    search --> tag:'<tag>' limit:<limit>
     No 1 : <title>
     No 2 : <title>
     No 3 : <title>

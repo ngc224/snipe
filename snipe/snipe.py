@@ -22,7 +22,6 @@ class Snipe():
         self.client_note_store = self.client.get_note_store()
         self.tag = sys_config.note_default_tag
         self.limit = sys_config.note_max_limit
-        self.bookguid = None
 
     def setMetaNotes(self):
         filter = NoteStore.NoteFilter()
@@ -31,7 +30,7 @@ class Snipe():
         filter.ascending = True
         spec = NoteStore.NotesMetadataResultSpec()
         spec.includeTitle = True
-        notes_metadata = self.client_note_store.findNotesMetadata(filter, 0, self.limit, spec)
+        notes_metadata = self.client_note_store.findNotesMetadata(filter, 0, int(self.limit), spec)
         meta_notes = [x for x in notes_metadata.notes]
         meta_notes = dict(zip(range(1, len(meta_notes)+1), meta_notes))
         Snipe.saveNotes(sys_config.filepath_dump, meta_notes)
@@ -84,6 +83,7 @@ class UserConfig():
             user_config = ConfigParser.RawConfigParser()
             user_config.add_section(sys_config.application_name)
             user_config.set(sys_config.application_name, 'tag', '')
+            user_config.set(sys_config.application_name, 'limit', '')
             with open(self.filepath, 'wb') as configfile:
                 user_config.write(configfile)
                 os.chmod(self.filepath, 0644)
@@ -94,7 +94,7 @@ class UserConfig():
             return self.user_config.get(sys_config.application_name, option)
 
     def setDeveloperToken(self):
-        print(textui.colored.green('Get Evernote DeveloperToken URL --> ' + sys_config.token_geturl))
+        print(textui.colored.green('Get Evernote DeveloperToken URL --> ' + sys_config.evernote_developer_token_url))
         while True:
             developer_token = raw_input('DeveloperToken: ')
             if self.isDeveloperToken(developer_token, sys_config.sandbox):
@@ -102,9 +102,15 @@ class UserConfig():
                 return self
 
     def setDefaultTag(self):
-        print(textui.colored.green("Set search tag / Default is 'Snipe'"))
+        print(textui.colored.green("Set search tag / Default is '" + sys_config.note_default_tag + "'"))
         tag = raw_input('Search tag: ')
         self.user_config.set(sys_config.application_name, 'tag', tag)
+        return self
+
+    def setDefaultLimit(self):
+        print(textui.colored.green("Set search max limit / Default is " + str(sys_config.note_max_limit)))
+        limit = raw_input('Search limit: ')
+        self.user_config.set(sys_config.application_name, 'limit', limit)
         return self
 
     def save(self):
@@ -127,11 +133,11 @@ def main():
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + sys_config.version)
 
     args = parser.parse_args()
-    user_config = UserConfig(sys_config.filepath_user)
 
+    user_config = UserConfig(sys_config.filepath_user)
     if args.config:
         try:
-            user_config.setDeveloperToken().setDefaultTag().save()
+            user_config.setDeveloperToken().setDefaultTag().setDefaultLimit().save()
         except:
             return 1
         return 0
@@ -148,6 +154,10 @@ def main():
     if len(tag) > 0:
         snipe.tag = tag
 
+    limit = user_config.getUserOption('limit')
+    if limit.isdigit():
+        snipe.limit = limit
+
     if args.number is not None:
         try:
             enex = snipe.getNoteContent(args.number)
@@ -158,7 +168,7 @@ def main():
         Snipe.enexParse(dom)
         return 0
 
-    print textui.colored.green("Search tag --> '" + snipe.tag + "'")
+    print textui.colored.green("search --> tag:'" + snipe.tag + "' limit:" + str(snipe.limit))
 
     try:
         for k, v in snipe.setMetaNotes().items():

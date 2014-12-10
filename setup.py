@@ -7,7 +7,7 @@ install_requires = ['evernote', 'clint', 'keyring']
 if sys.version_info < (2, 7):
     install_requires.append('argparse')
 
-setup(name='snipe',
+setup(name=config.application_name,
       version=config.version,
       description='Evernote command line tool',
       author='Yoshihiko Nishida',
