@@ -155,7 +155,7 @@ def main():
         snipe.tag = tag
 
     limit = user_config.getUserOption('limit')
-    if limit.isdigit():
+    if limit and limit.isdigit():
         snipe.limit = limit
 
     if args.number is not None:
